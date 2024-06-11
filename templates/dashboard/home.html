@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+{% block head %}
+{{ super() }}
+<style>
+    img {
+        border-radius: 50%;
+    }
+
+    #header {
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    #header h1 {
+        font-size: 2em;
+    }
+
+    #ensembles {
+        padding: 10px;
+    }
+
+    #ensembles ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .ensemble {
+        padding: 10px;
+        background-color: var(--background-secondary-color);
+        margin: 5px;
+    }
+</style>
+{% endblock head %}
+{% block content %}
+<div id="header">
+    {% if photo != "empty" %}
+    <img src="{{ photo }}" alt="Profile Picture" width="200" height="200">
+    {% else %}
+    <img src="/favicon.png" alt="Profile Picture" width="200" height="200">
+    {% endif %}
+    <h1>Welcome, {{ first_name }} {{ last_name}}</h1>
+</div>
+<hr>
+<div id="ensembles">
+    <h2>Your Ensembles</h2>
+    <ul>
+        {% for ensemble in ensembles %}
+        <li>
+            <div class="ensemble">
+                <h3><a href="/dashboard/ensemble/{{ ensemble.id }}">{{ ensemble.name }}</a></h3>
+                <p>{{ ensemble.role }} | {{ ensemble.instrument }} {% if ensemble.subscribed %} | Subscribed {% endif %}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

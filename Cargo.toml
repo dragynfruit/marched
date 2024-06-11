@@ -1,0 +1,17 @@
+[package]
+name = "marched"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = "0.7.5"
+axum-extra = { version = "0.9.3", features = ["cookie"] }
+once_cell = "1.19.0"
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.117"
+sha1 = "0.10.6"
+tera = "1.20.0"
+tokio = { version = "1.38.0", features = ["macros", "rt-multi-thread", "net", "signal"] }
+ureq = { version = "2.9.7", features = ["json"] }

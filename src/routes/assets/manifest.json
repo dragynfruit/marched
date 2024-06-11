@@ -1,0 +1,19 @@
+{
+    "name": "Marched",
+    "short_name": "Marched",
+    "display": "standalone",
+    "background_color": "#121212",
+    "description": "Marched is a free, privacy respecting frontend for UDB app pro written in Rust.",
+    "theme_color": "#ff5100",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "32x32"
+        },
+        {
+            "src": "favicon.png",
+            "sizes": "512x512"
+        }
+    ]
+}

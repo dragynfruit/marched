@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    <title>{% block title %}{% endblock title %} - Marched</title>
+    {% endblock head %}
+
+    {% block seo %}
+    <link rel="manifest" type="application/json" href="/manifest.json">
+
+    <meta name="description" content="Marched is a free, privacy respecting frontend for UDB app pro written in Rust.">
+    <meta name="keywords" content="udb, marching, music, rust, privacy, free">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#ff5100">
+
+    <meta name="og:site_name" content="Marched">
+    <meta name="og:locale" content="en_US">
+    <meta name="og:image" content="/favicon.png">
+    {% endblock seo %}
+    {% include "style.html" %}
+</head>
+
+<body>
+    <div id="nav">
+        <h1><a href="/">Marched</a></h1>
+    </div>
+    <div id="content">{% block content %}{% endblock content %}</div>
+    <div id="footer">
+        {% block footer %}
+        Contribute here at <a href="https://github.com/Dragynfruit/marched">Github</a> - <a href="/info">Instance Info</a>
+        {% endblock footer %}
+    </div>
+</body>
+
+</html>
