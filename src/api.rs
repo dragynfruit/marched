@@ -66,7 +66,7 @@ pub struct Interval {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Selected {
+pub struct Calendar {
     #[serde(rename(deserialize = "_id"))]
     pub id: String,
 
@@ -93,8 +93,10 @@ pub struct Selected {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Calendar {
-    pub selected: Vec<Selected>,
+pub struct UDBCalendar {
+    #[serde(rename(deserialize = "selected"))]
+    pub calendars: Vec<Calendar>,
+
     pub refresh_token: String,
 }
 
@@ -104,7 +106,10 @@ pub struct Ensemble {
     pub id: String,
 
     pub interval: Interval,
-    pub calendar: Calendar,
+
+    #[serde(rename(deserialize = "calendar"))]
+    pub udb_calendar: UDBCalendar,
+
     pub users_count: u32,
     pub users_max: u32,
     pub code: String,

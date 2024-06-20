@@ -6,6 +6,9 @@
 </style>
 {% endblock head %}
 {% block content %}
-<h1>{{ name }}</h1>
-<h2>{{ school_state }}</h2>
+<h1>{{ name }} - {{ school_state }}</h1>
+<h2>Calendars</h2>
+{% for calendar in udb_calendar.calendars %}
+<iframe src="/calendar/{{ calendar.google_id }}" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+{% endfor %}
 {% endblock content %}
