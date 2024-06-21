@@ -9,6 +9,12 @@
     {% include "style.html" %}
 
     <style>
+        html, body {
+            height: 10%;
+            margin: 0;
+            font-family: Verdana, sans-serif;
+        }
+
         * {
             box-sizing: border-box;
         }
@@ -17,8 +23,12 @@
             list-style-type: none;
         }
 
-        body {
-            font-family: Verdana, sans-serif;
+        .box {
+            display: flex;
+            flex-flow: column;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
         }
 
         .month {
@@ -34,7 +44,7 @@
         }
 
         .month ul li {
-            color: var(--text-color);
+            color: white;
             font-size: 20px;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -46,7 +56,7 @@
         }
 
         .month .prev a {
-            color: var(--text-color);
+            color: white;
         }
 
         .month .next {
@@ -55,7 +65,7 @@
         }
 
         .month .next a {
-            color: var(--text-color);
+            color: white;
         }
 
         .weekdays {
@@ -75,6 +85,8 @@
             padding: 10px 0;
             background: var(--background-secondary-color);
             margin: 0;
+            height: 100%;
+            flex-grow: 1;
         }
 
         .days li {
@@ -85,12 +97,28 @@
             margin-bottom: 5px;
             font-size: 12px;
             color: var(--text-color);
+            height: 16.6%;
         }
 
-        .days li .active {
-            padding: 5px;
+        .days li.active {
             background: var(--primary-color);
-            color: white !important
+        }
+
+        .days li.disabled {
+            color: var(--disabled-color) !important;
+        }
+
+        .year {
+            padding: 5px;
+            background-color: transparent;
+            color: white;
+            border: 0;
+            font-size: large;
+        }
+
+        .year option {
+            background-color: var(--background-secondary-color);
+            color: var(--text-color);
         }
 
         /* Add media queries for smaller screens */
@@ -125,78 +153,66 @@
 </head>
 
 <body>
-    {% set month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] %}
+    {% set month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+    "October", "November", "December"] %}
 
-    {% if month == 0 %}
+    {% if month_index == 0 %}
     {% set previous_month = 11 %}
     {% set previous_year = year - 1 %}
     {% else %}
-    {% set previous_month = month - 1 %}
+    {% set previous_month = month_index - 1 %}
     {% set previous_year = year %}
     {% endif %}
 
-    {% if month == 11 %}
+    {% if month_index == 11 %}
     {% set next_month = 0 %}
     {% set next_year = year + 1 %}
     {% else %}
-    {% set next_month = month + 1 %}
+    {% set next_month = month_index + 1 %}
     {% set next_year = year %}
     {% endif %}
 
-    <div class="month">
-        <ul>
-            <li class="prev"><a href="?year={{ previous_year }}&month={{ previous_month }}">&#10094;</a></li>
-            <li class="next"><a href="?year={{ next_year }}&month={{ next_month }}">&#10095;</a></li>
-            <li>
-                {{ month_names[month] }}<br>
-                <span style="font-size:18px">{{ year }}</span>
-            </li>
+    <div class="box">
+        <div class="month">
+            <ul>
+                <li class="prev"><a href="?year={{ previous_year }}&month={{ previous_month }}">&#10094;</a></li>
+                <li class="next"><a href="?year={{ next_year }}&month={{ next_month }}">&#10095;</a></li>
+                <li>
+                    {{ month_names[month_index] }}<br>
+                    <form action="?" method="get">
+                        <select class="year" name="year" id="year" onchange="this.form.submit()">
+                            {% for i in range(start=year-10, end=year+10) %}
+                            <option value="{{ i }}" {% if i == year %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="month" value="{{ month_index }}">
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="weekdays">
+            <li>Mon</li>
+            <li>Tue</li>
+            <li>Wed</li>
+            <li>Thu</li>
+            <li>Fri</li>
+            <li>Sat</li>
+            <li>Sun</li>
+        </ul>
+
+        <ul class="days">
+            {% for i in range(end=first_day_index) | reverse %}
+            <li class="disabled">{{ previous_month_length - i }}</li>
+            {% endfor %}
+            {% for i in range(end=month_length) %}
+            <li>{{ i + 1 }}</li>
+            {% endfor %}
+            {% for i in range(end=42 - month_length - first_day_index) %}
+            <li class="disabled">{{ i + 1 }}</li>
+            {% endfor %}
         </ul>
     </div>
-
-    <ul class="weekdays">
-        <li>Mo</li>
-        <li>Tu</li>
-        <li>We</li>
-        <li>Th</li>
-        <li>Fr</li>
-        <li>Sa</li>
-        <li>Su</li>
-    </ul>
-
-    <ul class="days">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
-        <li><span class="active">10</span></li>
-        <li>11</li>
-        <li>12</li>
-        <li>13</li>
-        <li>14</li>
-        <li>15</li>
-        <li>16</li>
-        <li>17</li>
-        <li>18</li>
-        <li>19</li>
-        <li>20</li>
-        <li>21</li>
-        <li>22</li>
-        <li>23</li>
-        <li>24</li>
-        <li>25</li>
-        <li>26</li>
-        <li>27</li>
-        <li>28</li>
-        <li>29</li>
-        <li>30</li>
-        <li>31</li>
-    </ul>
 </body>
 
 </html>
