@@ -72,40 +72,50 @@
             margin: 0;
             padding: 10px 0;
             background-color: var(--background-primary-color);
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
         }
 
-        .weekdays li {
+        .weekdays div {
             display: inline-block;
-            width: 13.6%;
             color: var(--text-color);
             text-align: center;
+        }
+
+        .weekdays .small {
+            display: none;
+        }
+
+        .weekdays .large {
+            display: block;
         }
 
         .days {
             padding: 10px 0;
-            background: var(--background-secondary-color);
+            background: var(--background-primary-color);
             margin: 0;
             height: 100%;
             flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 5px;
         }
 
-        .days li {
-            list-style-type: none;
+        .days div {
             display: inline-block;
-            width: 13.6%;
-            text-align: center;
-            margin-bottom: 5px;
             font-size: 12px;
+            padding: 5px;
             color: var(--text-color);
-            height: 16.6%;
+            background-color: var(--background-secondary-color);
         }
 
-        .days li.active {
+        .days .active {
             background: var(--primary-color);
         }
 
-        .days li.disabled {
-            color: var(--disabled-color) !important;
+        .days .disabled {
+            color: var(--disabled-color);
         }
 
         .year {
@@ -121,32 +131,13 @@
             color: var(--text-color);
         }
 
-        /* Add media queries for smaller screens */
-        @media screen and (max-width:720px) {
-
-            .weekdays li,
-            .days li {
-                width: 13.1%;
-            }
-        }
-
-        @media screen and (max-width: 420px) {
-
-            .weekdays li,
-            .days li {
-                width: 12.5%;
+        @media (max-width: 600px) {
+            .weekdays .small {
+                display: block;
             }
 
-            .days li .active {
-                padding: 2px;
-            }
-        }
-
-        @media screen and (max-width: 290px) {
-
-            .weekdays li,
-            .days li {
-                width: 12.2%;
+            .weekdays .large {
+                display: none;
             }
         }
     </style>
@@ -155,6 +146,7 @@
 <body>
     {% set month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
     "October", "November", "December"] %}
+    {% set day_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
 
     {% if month_index == 0 %}
     {% set previous_month = 11 %}
@@ -191,27 +183,26 @@
             </ul>
         </div>
 
-        <ul class="weekdays">
-            <li>Mon</li>
-            <li>Tue</li>
-            <li>Wed</li>
-            <li>Thu</li>
-            <li>Fri</li>
-            <li>Sat</li>
-            <li>Sun</li>
-        </ul>
+        <div class="weekdays">
+            {% for day in day_names %}
+            <div class="small">{{ day | truncate(length=3, end="") }}</div>
+            {% endfor %}
+            {% for day in day_names %}
+            <div class="large">{{ day }}</div>
+            {% endfor %}
+        </div>
 
-        <ul class="days">
+        <div class="days">
             {% for i in range(end=first_day_index) | reverse %}
-            <li class="disabled">{{ previous_month_length - i }}</li>
+            <div class="disabled">{{ previous_month_length - i }}</div>
             {% endfor %}
             {% for i in range(end=month_length) %}
-            <li>{{ i + 1 }}</li>
+            <div>{{ i + 1 }}</div>
             {% endfor %}
             {% for i in range(end=42 - month_length - first_day_index) %}
-            <li class="disabled">{{ i + 1 }}</li>
+            <div class="disabled">{{ i + 1 }}</div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 </body>
 
