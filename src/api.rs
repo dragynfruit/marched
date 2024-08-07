@@ -101,6 +101,22 @@ pub struct UDBCalendar {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct Address {
+    pub ensemble_phone: String,
+    pub director_phone: String,
+
+    #[serde(rename(deserialize = "scholl_name"))]
+    pub school_name: String,
+
+    pub city: String,
+    pub state: String,
+    pub address: String,
+
+    #[serde(rename(deserialize = "_id"))]
+    pub id: String,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Ensemble {
     #[serde(rename(deserialize = "_id"))]
     pub id: String,
@@ -138,7 +154,7 @@ pub struct Ensemble {
     #[serde(rename(deserialize = "createDate"))]
     pub create_date: String,
 
-    pub addresses: Vec<String>,
+    pub addresses: Vec<Address>,
     pub school_district: String,
     pub school_state: String,
     pub udb_app_trial: bool,
