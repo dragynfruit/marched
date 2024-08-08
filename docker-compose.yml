@@ -1,0 +1,8 @@
+services:
+  pasted:
+    image: marched:latest
+    restart: always
+    container_name: "marched"
+    read_only: true
+    ports:
+      - "3000:3000"
