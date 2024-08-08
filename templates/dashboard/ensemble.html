@@ -3,20 +3,132 @@
 {% block head %}
 {{ super() }}
 <style>
+    #header {
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    #stats {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+
+    #stats div {
+        background-color: var(--background-secondary-color);
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        margin: 2.5px;
+        display: inline-block;
+    }
+
+    .password:hover::after {
+        content: attr(data-password);
+    }
+
+    .password::after {
+        content: '********';
+    }
+
+    #split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    @media screen and (max-width: 1200px) {
+        #split {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 {% endblock head %}
 {% block content %}
-<h1>{{ name }} - {{ school_state }}</h1>
-{% if addresses %}
-<h2>Addresses</h2>
-<ul>
-{% for address in addresses %}
-<li>{{ address.school_name }}<br>{{ address.address }}, {{ address.city }}, {{ address.state }}<br><a href="tel:{{ address.ensemble_phone | slugify | replace(from='-', to='') }}">{{ address.ensemble_phone }}</a></li>
-{% endfor %}
-</ul>
-{% endif %}
-<h2>Calendars</h2>
-{% for calendar in udb_calendar.calendars %}
-<iframe src="/calendar/{{ calendar.google_id }}" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-{% endfor %}
+<h1 id="header">{{ name }}</h1>
+<h2>Stats</h2>
+<div id="stats">
+    <div>
+        <h3>Join Code</h3>
+        <p>{{ code }}</p>
+    </div>
+    <div>
+        <h3>Join Password</h3>
+        <p class="password" data-password="{{ ensemble_password }}"></p>
+        <p style="font-size: 9px">Hover over me!</p>
+    </div>
+    <div>
+        <h3>Members</h3>
+        <p>{{ users_count }} / {{ users_max }}</p>
+    </div>
+    <div>
+        <h3>School State</h3>
+        <p>{{ school_state }}</p>
+    </div>
+    <div>
+        <h3>School District</h3>
+        <p>{{ school_district }}</p>
+    </div>
+    <div>
+        <h3>Languages</h3>
+        <p>{{ languages | join(sep=", ") }}</p>
+    </div>
+    <div>
+        <h3>Blocked by Admin</h3>
+        <p>{{ is_blocked_by_admin }}</p>
+    </div>
+    <div>
+        <h3>UDB App</h3>
+        <p>{{ udb_app }}</p>
+    </div>
+    <div>
+        <h3>UDB App Pro</h3>
+        <p>{{ udb_app_pro }}</p>
+    </div>
+    <div>
+        <h3>UDB App Trial</h3>
+        <p>{{ udb_app_trial }}</p>
+    </div>
+    <div>
+        <h3>Subscription Start</h3>
+        <p>{{ subscription_start }}</p>
+    </div>
+    <div>
+        <h3>Subscription End</h3>
+        <p>{{ subscription_end }}</p>
+    </div>
+    <div>
+        <h3>Subscribed</h3>
+        <p>{{ subscribed }}</p>
+    </div>
+    <div>
+        <h3>Created Date</h3>
+        <p>{{ create_date }}</p>
+    </div>
+</div>
+
+<div id="split">
+    <div>
+        <h2>Addresses</h2>
+        <ul>
+            {% for address in addresses %}
+            <li>{{ address.school_name }}<br><a
+                    href="//maps.google.com/maps?q={{ address.address }},%20{{ address.city }},%20{{ address.state }}&hl=en"
+                    target="_blank">{{ address.address }}, {{ address.city }}, {{ address.state }}</a><br><a
+                    href="tel:{{ address.ensemble_phone | slugify | replace(from='-', to='') }}">{{
+                    address.ensemble_phone
+                    }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>Calendars</h2>
+        {% for calendar in udb_calendar.calendars %}
+        <iframe src="/calendar/{{ calendar.google_id }}" style="border: 0" width="800" height="600" frameborder="0"
+            scrolling="no"></iframe>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
